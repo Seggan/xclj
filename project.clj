@@ -1,4 +1,4 @@
-(defproject xclj "0.1.0-SNAPSHOT"
+(defproject xclj "0.1.1-SNAPSHOT"
   :description "Clojure, XML edition"
   :url "https://github.com/Seggan/xclj"
   :license {:name "Apache-2.0"

@@ -6,7 +6,7 @@
 
 (defn- convertToClojure [xml]
   (if (string? xml)
-    (map read-string (clojure.string/split xml #"\s+"))
+    (read-string (str \[ xml \]))
     (let [tag (:tag xml)
           attrs (:attrs xml)
           children (:content xml)]

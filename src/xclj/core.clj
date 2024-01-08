@@ -1,12 +1,12 @@
 (ns xclj.core
-  (:import (java.io ByteArrayInputStream))
-  (:require [clojure.xml :as xml]
-            [clojure.string :as string]
-            [clojure.pprint :refer [pprint]]))
+  (:gen-class :main true)
+  (:require [clojure.xml]
+            [clojure.string])
+  (:import (java.io ByteArrayInputStream)))
 
 (defn- convertToClojure [xml]
   (if (string? xml)
-    (map read-string (string/split xml #"\s+"))
+    (map read-string (clojure.string/split xml #"\s+"))
     (let [tag (:tag xml)
           attrs (:attrs xml)
           children (:content xml)]
@@ -18,8 +18,8 @@
                   (read-string (first children)))
                 (cons (resolve (symbol tag)) (mapcat convertToClojure children))))))))
 
-(defn -main [file]
+(defn -main [file & args]
   (let [input (ByteArrayInputStream. (.getBytes (slurp file)))
-        xml (xml/parse input)
+        xml (clojure.xml/parse input)
         clj (first (convertToClojure xml))]
-    (eval clj)))
+    (println (apply (eval clj) (map read-string args)))))

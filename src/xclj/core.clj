@@ -10,16 +10,16 @@
     (let [tag (:tag xml)
           attrs (:attrs xml)
           children (:content xml)]
-      (if (empty? children)
-        (list (resolve (symbol tag)))
-        (if (= :q tag)
-          (if-let [name (:tag attrs)]
-            (cons (resolve (symbol name)) (mapcat convertToClojure children))
-            (read-string (first children)))
-          (cons (resolve (symbol tag)) (mapcat convertToClojure children)))))))
+      (list (if (empty? children)
+              (list (resolve (symbol tag)))
+              (if (= :q tag)
+                (if-let [name (:tag attrs)]
+                  (cons (resolve (symbol name)) (mapcat convertToClojure children))
+                  (read-string (first children)))
+                (cons (resolve (symbol tag)) (mapcat convertToClojure children))))))))
 
 (defn -main [file]
   (let [input (ByteArrayInputStream. (.getBytes (slurp file)))
         xml (xml/parse input)
-        clj (convertToClojure xml)]
-    (println (eval clj))))
+        clj (first (convertToClojure xml))]
+    (eval clj)))

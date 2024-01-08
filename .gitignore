@@ -13,5 +13,6 @@ pom.xml.asc
 .hg/
 /.idea
 *.iml
+.attach_pid*
 
 test.xml

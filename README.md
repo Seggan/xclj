@@ -3,9 +3,16 @@
 Clojure, XML edition.
 
 ```xml
-<fn>[arg]
-    <println><q tag="+">arg arg</q></println>
-</fn>
+<xclj>
+    <defn>x [a]
+        <println>a</println>
+    </defn>
+    <defn>main [arg]
+        <x>
+            <q tag="+">arg arg</q>
+        </x>
+    </defn>
+</xclj>
 ```
 
 ## Semantics Bootcamp
@@ -39,6 +46,7 @@ Should you need to use a function that cannot be expressed as a valid XML tag na
 $ java -jar xclj-uber.jar <input-file> args...
 ```
 
-The input file should consist of a single function. The `args` will be passed to that function as an evaluated list.
+The input file must have an `<xclj>` root tag. The function called must be called `main`.
+All arguments are passed to the `main` function as a vector of evaluated strings.
 
 This is a joke project, but if you happen to somehow find it useful, I'd love to hear about it.

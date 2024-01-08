@@ -20,6 +20,9 @@
 
 (defn -main [file & args]
   (let [input (ByteArrayInputStream. (.getBytes (slurp file)))
-        xml (clojure.xml/parse input)
-        clj (first (convertToClojure xml))]
-    (println (apply (eval clj) (map read-string args)))))
+        xml (clojure.xml/parse input)]
+    (when (not= :xclj (:tag xml))
+      (throw (IllegalArgumentException. "Must have xclj root tag")))
+    (doseq [form (:content xml)]
+      (eval (first (convertToClojure form))))
+    (apply (resolve 'main) (map read-string args))))
